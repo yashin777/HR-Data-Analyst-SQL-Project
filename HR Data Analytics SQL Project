@@ -1,0 +1,41 @@
+/* Table 1 */
+SELECT*
+FROM employee;
+
+/* Table 2 */
+SELECT*
+FROM `employee.salary`;
+
+/* Finding average Hourly rate  */
+SELECT employee.JobRole ,AVG(`employee.salary`.HourlyRate), employee.YearsAtCompany 
+FROM employee 
+LEFT JOIN `employee.salary`
+ON employee.EmployeeNumber = `employee.salary`.EmployeeNumber
+GROUP BY employee.JobRole, employee.YearsAtCompany  ;
+
+
+/* 1,233 Employees stayed in the company  */
+SELECT COUNT(Attrition) 
+FROM `employee.salary`
+WHERE Attrition='No'; 
+
+/* 237 employees left the company  */
+SELECT COUNT(Attrition) 
+FROM `employee.salary`
+WHERE Attrition='YES'; 
+
+/* Finding the count of environment satisfaction from employees job role and years at the company*/
+
+SELECT employee.JobRole ,COUNT(employee.EnvironmentSatisfaction), employee.YearsAtCompany 
+FROM employee 
+LEFT JOIN `employee.salary`
+ON employee.EmployeeNumber = `employee.salary`.EmployeeNumber
+GROUP BY employee.JobRole, employee.YearsAtCompany  ;
+
+/* Finding the average percent salary hike for the employees who had been working for the company less than 10 years  */
+
+SELECT AVG(`employee.salary`.PercentSalaryHike), employee.YearsAtCompany,employee.JobRole
+FROM employee
+JOIN `employee.salary` ON employee.EmployeeNumber = `employee.salary`.EmployeeNumber
+GROUP BY employee.YearsAtCompany,employee.JobRole 
+HAVING  employee.YearsAtCompany < 10;
